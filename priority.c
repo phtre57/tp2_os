@@ -11,7 +11,7 @@
 #include <sched.h>
 
 #define NUMBER_OF_THREADS 5
-#define SCHEDULER_TYPE 0
+#define SCHEDULER_TYPE 1
 
 void *work(void *tid){
 	while(1);
@@ -27,7 +27,8 @@ void change_scheduler(int scheduler){
 		int average_priority = min_max_priority / 2;
 		fifo_param.sched_priority = average_priority;
 		ret = sched_setscheduler(0, SCHED_FIFO, &fifo_param);
-		printf("errno number: %d\n", errno);
+		printf("Scheduler type: FIFO");
+		printf("errno number for changing scheduler to FIFO: %d\n", errno);
 	}
 
 	else if (scheduler == 1){
@@ -37,7 +38,7 @@ void change_scheduler(int scheduler){
 		int average_priority =  min_max_priority / 2;
 		rr_param.sched_priority = average_priority;
 		ret = sched_setscheduler(0, SCHED_RR, &rr_param);
-		printf("errno number: %c\n", errno);
+		printf("errno number for changing scheduler to RR: %d\n", errno);
 	}
 
 	else{
@@ -59,7 +60,7 @@ int main(int argc, char *argv[]){
 		int ret = setpriority(PRIO_PROCESS, threads[i], priority_value);
 		printf("thread number: %d\n", i);
 		printf("ret for that thread: %d\n", ret);
-		printf("errno for that thread: %d\n\n", errno);
+		printf("global errno: %d\n\n", errno);
 		priority_value += priority_increment;
 	}
 
