@@ -11,6 +11,8 @@
 #include <sched.h>
 
 #define NUMBER_OF_THREADS 5
+
+//change SCHEDULER_TYPE to 0 for FIFO scheduler and to 1 for RR scheduler
 #define SCHEDULER_TYPE 1
 
 void *work(void *tid){
@@ -50,6 +52,8 @@ void change_scheduler(int scheduler){
 
 int main(int argc, char *argv[]){
 	pthread_t threads[NUMBER_OF_THREADS];
+	/*priority_increment and priority value are used to change priorities of threads starting with
+	a start value (priority value) and an increment with priority_increment */ 
 	int priority_increment = 0;
 	int priority_value = 0;
 	change_scheduler(SCHEDULER_TYPE);
