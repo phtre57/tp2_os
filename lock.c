@@ -68,13 +68,13 @@ void *CodeThread(void * a)
     long i, tmp;
     for(i = 0; i < N_ITER; i++)
     {
-        //PthreadLock();
+        PthreadLock();
         //AtomicLock();
-        BadLock(); 
+        //BadLock(); 
         count++;
-        BadUnlock();
+        //BadUnlock();
         //AtomicUnlock();
-        //PthreadUnlock();
+        PthreadUnlock();
     }
 }
 
