@@ -59,13 +59,13 @@ int main(int argc, char *argv[]){
 	change_scheduler(SCHEDULER_TYPE);
 
 	for(int i = 0; i < NUMBER_OF_THREADS; i++){
+		priority_value += priority_increment;
 		pthread_create(&threads[i], NULL, work, (void*)i);
 		threads[i] = syscall(SYS_gettid);
 		int ret = setpriority(PRIO_PROCESS, threads[i], priority_value);
 		printf("thread number: %d\n", i);
 		printf("ret for that thread: %d\n", ret);
 		printf("global errno: %d\n\n", errno);
-		priority_value += priority_increment;
 	}
 
 	pthread_exit(NULL);
