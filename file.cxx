@@ -32,9 +32,12 @@ bool File::Retire(ItemFile& item) {
 			//std::cout << "in while retire \n";
 			//std::cout << "Bool execution_terminee: " << !execution_terminee << "\n";
 			if (execution_terminee){
+				//std::cout << "in while retire false \n";
+				pthread_mutex_unlock(&mutex_stockage);
 				return false;
 			}
 			else{
+				//std::cout << "in while retire true \n";
 				pthread_cond_wait(&condition_consommateurs, &mutex_stockage);
 			}
 		}
