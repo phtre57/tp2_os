@@ -15,11 +15,10 @@ void File::Insere(const ItemFile& item) {
 		//std::cout << "in while insere \n";
 		pthread_cond_wait(&condition_producteurs, &mutex_stockage);
 	}
-	pthread_cond_signal(&condition_producteurs);
 	stockage.push_back(item);
 	//std::cout << "Item insert serial_no: " << item.numero_serie << "\n";
+	pthread_cond_signal(&condition_consommateurs);
 	pthread_mutex_unlock(&mutex_stockage);
-	pthread_cond_broadcast(&condition_consommateurs); //signal that things can be consummed
 
 }
 
@@ -42,19 +41,18 @@ bool File::Retire(ItemFile& item) {
 				pthread_cond_wait(&condition_consommateurs, &mutex_stockage);
 			}
 		}
-		pthread_cond_signal(&condition_consommateurs);
 		item = stockage.front();
 		//std::cout << "Item remove serial_no: " << item.numero_serie << "\n";
 		stockage.pop_front();
+		pthread_cond_signal(&condition_producteurs);
 		pthread_mutex_unlock(&mutex_stockage);
-		pthread_cond_broadcast(&condition_producteurs); //signal that things can be produced
 		return true;
 	}
 
 	if (stockage.size() > 0){
 		item = stockage.front();
 		stockage.pop_front();
-		std::cout << "here " << stockage.size() << "\n";
+		//std::cout << "here " << stockage.size() << "\n";
 		pthread_mutex_unlock(&mutex_stockage);
 		return true;
 	}
